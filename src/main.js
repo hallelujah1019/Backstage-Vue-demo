@@ -12,7 +12,8 @@ import axios from 'axios'
 Vue.prototype.$axios = axios
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 
-Vue.use(ElementUI)
+Vue.use(ElementUI) // vue.ues（）注册整个的所有elemengUI组件
+// use 调用了elementUI的一个方法  install    源码里面
 Vue.config.productionTip = false
 
 new Vue({
