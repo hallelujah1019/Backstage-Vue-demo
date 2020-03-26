@@ -6,6 +6,11 @@ import './styles/index.less'
 // 引入elementUI
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+// 引入axios
+import axios from 'axios'
+// 赋值给Vue的原型属性
+Vue.prototype.$axios = axios
+axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
