@@ -6,7 +6,7 @@
         Welcome
       </div>
       <!-- 表单  :model表单的数据对象 :rules表单验证规则对象-->
-      <el-form style="margin-top:30px" ref="ruleForm" :model="loginForm" :rules="loginRules">
+      <el-form style="margin-top:30px" ref="ruleForm" :model="loginForm" :rules="loginRules" status-icon status-icon-color="red">
         <!-- 手机号 -->
         <el-form-item prop="mobile">
           <el-input v-model="loginForm.mobile" placeholder="请输入你的手机号" maxlength="11" ></el-input>
@@ -83,7 +83,7 @@ export default {
               // elementui正确提示
               this.$message({ message: '登录成功', type: 'success' })
               // 跳转到主页/home
-              this.$router.push('/home')
+              this.$router.push('/')
             })
             .catch(() => {
               // elementui错误提示
