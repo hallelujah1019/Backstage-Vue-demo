@@ -17,8 +17,8 @@
         <i class="el-icon-s-tools" ></i>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>账户信息</el-dropdown-item>
-          <el-dropdown-item>git地址</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item @click.native="gitHttp">git地址</el-dropdown-item>
+          <el-dropdown-item @click.native="onLogout">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-col>
@@ -35,8 +35,8 @@ export default {
     }
   },
   methods: {
+    // 调用父组件（home.vue）的折叠方法
     fold () {
-      // 调用父组件（home.vue）的折叠方法
       this.$emit('foldMetod')
       // 折叠图标和展开图标之间的切换
       if (this.foldSwitch === true) {
@@ -46,6 +46,31 @@ export default {
         this.foldSwitch = true
         this.unfoldSwitch = false
       }
+    },
+    // git地址
+    gitHttp () {
+      window.location.href = 'https://github.com/hallelujah1019'
+    },
+    // 退出
+    onLogout () {
+      this.$confirm('确认退出吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 删除token，调到登录页
+        window.localStorage.removeItem('user_token')
+        this.$router.push('/login')
+        this.$message({
+          type: 'success',
+          message: '退出成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消退出'
+        })
+      })
     }
   }
 }

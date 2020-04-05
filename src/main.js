@@ -6,6 +6,8 @@ import './styles/index.less'
 // 引入elementUI
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+// 引入页面导航进度条样式文件
+import 'nprogress/nprogress.css'
 // 引入axios
 import axios from 'axios'
 // 赋值给Vue的原型属性
