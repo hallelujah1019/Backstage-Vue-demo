@@ -48,11 +48,12 @@
       </el-form>
     </el-card>
 
+    <!-- 查找结果表格 -->
     <el-card style="margin : 23px 0 23px 0">
       <div slot="header" class="clearfix">
         <span>共找到{{total_count }}条符合条件的内容</span>
       </div>
-      <el-table :data="articles" style="width: 100%">
+      <el-table :data="articles" v-loading="loading"   element-loading-text="拼命加载中" style="width: 100%">
         <el-table-column prop="date" label="封面" width="180" align="center">
           <!-- 在template声明 slot-scope="scope" ， 然后就可以通过scope.row获取遍历项-->
           <template slot-scope="scope">
@@ -75,6 +76,7 @@
     <el-pagination
       style="textAlign: center;"
       background
+      :disabled="loading"
       @size-change="onPageSizeChange"
       @current-change="onPageChange"
       :page-sizes="[10, 11]"
@@ -103,6 +105,7 @@ export default {
       total_count: 0,
       // 每页条数
       page_size: 10,
+      loading: true, // 表格的页面的加载状态
       // 文章数据列表
       articles: [],
       // 数据状态
@@ -137,6 +140,7 @@ export default {
     // 请求数据
     loadArticles (page = 1, pageSize) {
       const token = window.localStorage.getItem('user_token')
+      this.loading = true
       this.$axios({
         method: 'GET',
         url: '/articles',
@@ -149,11 +153,15 @@ export default {
           per_page: pageSize// 每页大小
         }
       })
-        .then(res => {
+        .then(res => { // 成功执行这里
           this.total_count = res.data.data.total_count
           this.articles = res.data.data.results
         })
-        .catch()
+        .catch() // 失败执行这里
+        .finally(() => { // 无论成功还是失败都执行这里
+        // 停止页面加载
+          this.loading = false
+        })
     },
     // 点击获取当前页数 和 点击获取每页条数 具体看elementUI
     onPageChange (page) {
