@@ -23,7 +23,7 @@
           <span slot="title">首页</span>
         </el-menu-item>
 
-        <el-submenu :style="submenuStyle" index="">
+        <el-submenu :style="submenuStyle" index="2">
           <template slot="title">
             <i class="el-icon-menu"></i>
             <span slot="title">内容管理</span>
@@ -34,7 +34,7 @@
           <el-menu-item index="1-4">素材管理</el-menu-item>
         </el-submenu>
 
-        <el-submenu :style="submenuStyle" index="">
+        <el-submenu :style="submenuStyle" index="3">
           <template slot="title">
             <i class="el-icon-star-on"></i>
             <span slot="title">粉丝管理</span>
@@ -45,7 +45,7 @@
           <el-menu-item index="2-4">粉丝列表</el-menu-item>
         </el-submenu>
 
-        <el-menu-item :style="submenuStyle" index="">
+        <el-menu-item :style="submenuStyle" index="4">
           <i class="el-icon-s-custom"></i>
           <span slot="title">账户信息</span>
         </el-menu-item>
@@ -108,7 +108,7 @@ export default {
 
 <style lang="less" scoped>
 .navigation {
-  height: 100vh;
+  height: 98em;
   overflow: hidden;
   .menu-title {
     padding: 8px 0;

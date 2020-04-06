@@ -18,8 +18,7 @@ const routes = [
   //   redirect: '/login'
   // },
   {
-    path: '/',
-    name: 'layout',
+    path: '',
     component: Layout,
     // 子路由
     children: [{
