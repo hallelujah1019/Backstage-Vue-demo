@@ -11,7 +11,7 @@
             单选框组会把选中的 radio 的 label 同步给绑定的数据
           -->
           <el-radio-group v-model="filterForm.status">
-            <!-- 接口要求，不传为全部 -->
+            <!--axios有个功能 当参数为null的时候，他就不发送了 接口要求，不传为全部 -->
             <el-radio :label="null">全部</el-radio>
             <el-radio label="0">草稿</el-radio>
             <el-radio label="1">待审核</el-radio>
@@ -26,8 +26,8 @@
             下拉列表会把选中的 option 的 value 同步到数据中
           -->
           <el-select placeholder="请选择频道" v-model="filterForm.channel_id">
-            <el-option label="所有频道" value="null"></el-option>
-            <el-option value="aaa"></el-option>
+             <el-option label="所有频道" :value="null"></el-option>
+            <el-option :label="channel.name" :value="channel.id" v-for="channel in channels" :key="channel.id"></el-option>
           </el-select>
         </el-form-item>
         <!-- ------------- -->
@@ -38,12 +38,13 @@
             range-separator="——"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
           ></el-date-picker>
         </el-form-item>
         <!-- ------------- -->
         <el-form-item>
           <!-- 点击查询按钮：重新发请求获取筛选数据，新查询的数据肯定从第 1 页开始 -->
-          <el-button type="primary">查询</el-button>
+          <el-button type="primary" @click="onQuery">查询</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -79,6 +80,7 @@
       :disabled="loading"
       @size-change="onPageSizeChange"
       @current-change="onPageChange"
+      :current-page="page"
       :page-sizes="[10, 11]"
       :page-size="page_size"
       layout="total, sizes, prev, pager, next, jumper"
@@ -95,15 +97,14 @@ export default {
       // 过滤数据的表单
       filterForm: {
         status: null,
-        channel_id: null,
-        begin_pubdate: '',
-        end_pubdate: ''
+        channel_id: null
       },
       // 日期范围（开始时间，结束时间）
-      rangeDate: '',
+      rangeDate: [],
       // 数据总条数
       total_count: 0,
       // 每页条数
+      page: 1,
       page_size: 10,
       loading: true, // 表格的页面的加载状态
       // 文章数据列表
@@ -130,11 +131,15 @@ export default {
           type: 'info',
           label: '已删除'
         }
-      ]
+      ],
+      // 频道列表
+      channels: []
     }
   },
   created () {
-    this.loadArticles()
+    this.loadArticles(1)
+    // 频道列表
+    this.loadChannels()
   },
   methods: {
     // 请求数据
@@ -150,7 +155,13 @@ export default {
         // Query参数使用params传递
         params: {
           page, // 页码
-          per_page: pageSize// 每页大小
+          per_page: pageSize, // 每页大小
+          // 文章状态
+          status: this.filterForm.status,
+          // 频道列表
+          channel_id: this.filterForm.channel_id,
+          begin_pubdate: this.rangeDate ? this.rangeDate[0] : null, // 开始时间
+          end_pubdate: this.rangeDate ? this.rangeDate[1] : null // 结束时间
         }
       })
         .then(res => { // 成功执行这里
@@ -166,10 +177,30 @@ export default {
     // 点击获取当前页数 和 点击获取每页条数 具体看elementUI
     onPageChange (page) {
       const pageSize = this.page_size
+      this.page = page
       this.loadArticles(page, pageSize)
     },
     onPageSizeChange (pageSize) {
       this.page_size = pageSize
+      this.loadArticles(1, pageSize)
+    },
+    // 获取频道列表
+    loadChannels () {
+      // 有些接口需要 token，有些接口不需要 token
+      // 是否需要，应该由接口文档指示
+      this.$axios({
+        method: 'GET',
+        url: '/channels'
+      }).then(res => {
+        console.log(res)
+
+        this.channels = res.data.data.channels
+      }).catch()
+    },
+    // 查询按钮
+    onQuery () {
+      const pageSize = this.page_size
+      this.page = 1
       this.loadArticles(1, pageSize)
     }
   }
