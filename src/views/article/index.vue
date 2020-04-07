@@ -26,8 +26,13 @@
             下拉列表会把选中的 option 的 value 同步到数据中
           -->
           <el-select placeholder="请选择频道" v-model="filterForm.channel_id">
-             <el-option label="所有频道" :value="null"></el-option>
-            <el-option :label="channel.name" :value="channel.id" v-for="channel in channels" :key="channel.id"></el-option>
+            <el-option label="所有频道" :value="null"></el-option>
+            <el-option
+              :label="channel.name"
+              :value="channel.id"
+              v-for="channel in channels"
+              :key="channel.id"
+            ></el-option>
           </el-select>
         </el-form-item>
         <!-- ------------- -->
@@ -54,7 +59,12 @@
       <div slot="header" class="clearfix">
         <span>共找到{{total_count }}条符合条件的内容</span>
       </div>
-      <el-table :data="articles" v-loading="loading"   element-loading-text="拼命加载中" style="width: 100%">
+      <el-table
+        :data="articles"
+        v-loading="loading"
+        element-loading-text="拼命加载中"
+        style="width: 100%"
+      >
         <el-table-column prop="date" label="封面" width="180" align="center">
           <!-- 在template声明 slot-scope="scope" ， 然后就可以通过scope.row获取遍历项-->
           <template slot-scope="scope">
@@ -70,7 +80,12 @@
           </template>
         </el-table-column>
         <el-table-column prop="pubdate" label="发布日期" align="center"></el-table-column>
-        <el-table-column prop="address" label="操作" align="center"></el-table-column>
+        <el-table-column prop="address" label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button type="danger" @click="onDelete(scope.row.id)">删除</el-button>
+            <el-button type="primary">编辑</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
     <!-- 分页 -->
@@ -164,13 +179,15 @@ export default {
           end_pubdate: this.rangeDate ? this.rangeDate[1] : null // 结束时间
         }
       })
-        .then(res => { // 成功执行这里
+        .then(res => {
+          // 成功执行这里
           this.total_count = res.data.data.total_count
           this.articles = res.data.data.results
         })
         .catch() // 失败执行这里
-        .finally(() => { // 无论成功还是失败都执行这里
-        // 停止页面加载
+        .finally(() => {
+          // 无论成功还是失败都执行这里
+          // 停止页面加载
           this.loading = false
         })
     },
@@ -191,17 +208,37 @@ export default {
       this.$axios({
         method: 'GET',
         url: '/channels'
-      }).then(res => {
-        console.log(res)
-
-        this.channels = res.data.data.channels
-      }).catch()
+      })
+        .then(res => {
+          this.channels = res.data.data.channels
+        })
+        .catch()
     },
     // 查询按钮
     onQuery () {
       const pageSize = this.page_size
       this.page = 1
       this.loadArticles(1, pageSize)
+    },
+    onDelete (articleId) {
+      this.$axios({
+        method: 'DELETE',
+        // /mp/v1_0/articles/:target
+        // 注意：接口路径中的 :target 是一个路径参数，:target 是动态的，例如1、2、3，不要写 :
+        url: `/articles/${articleId}`, // 任何数据和字符串相加都会自动 toString
+        headers: {
+          // 接口中说明的 Content-Type application/json 不需要传递
+          // 因为 axios 会自动添加发送 Content-Type application/json
+          Authorization: `Bearer ${window.localStorage.getItem('user_token')}`
+        }
+      })
+        .then(res => {
+          // 删除成功，重新加载当前页码文章列表
+          this.$message({ message: '删除成功', type: 'success' })
+          // 重新加载数据列表
+          this.loadArticles(this.page, this.page_size)
+        })
+        .catch()
     }
   }
 }
