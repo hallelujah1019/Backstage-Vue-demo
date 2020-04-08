@@ -159,14 +159,14 @@ export default {
   methods: {
     // 请求数据
     loadArticles (page = 1, pageSize) {
-      const token = window.localStorage.getItem('user_token')
+      // const token = window.localStorage.getItem('user_token')
       this.loading = true
       this.$axios({
         method: 'GET',
         url: '/articles',
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`
+        // },
         // Query参数使用params传递
         params: {
           page, // 页码
@@ -225,12 +225,12 @@ export default {
         method: 'DELETE',
         // /mp/v1_0/articles/:target
         // 注意：接口路径中的 :target 是一个路径参数，:target 是动态的，例如1、2、3，不要写 :
-        url: `/articles/${articleId}`, // 任何数据和字符串相加都会自动 toString
-        headers: {
-          // 接口中说明的 Content-Type application/json 不需要传递
-          // 因为 axios 会自动添加发送 Content-Type application/json
-          Authorization: `Bearer ${window.localStorage.getItem('user_token')}`
-        }
+        url: `/articles/${articleId}` // 任何数据和字符串相加都会自动 toString
+        // headers: {
+        //   // 接口中说明的 Content-Type application/json 不需要传递
+        //   // 因为 axios 会自动添加发送 Content-Type application/json
+        //   Authorization: `Bearer ${window.localStorage.getItem('user_token')}`
+        // }
       })
         .then(res => {
           // 删除成功，重新加载当前页码文章列表

@@ -12,7 +12,7 @@
         <!-- ----------------------------------------- -->
         <el-form-item label="内容">
         <!-- 富文本编辑器 -->
-          <quillEditor style="height:288px ; marginBottom: 68px" v-model="article.content" ref="myQuillEditor" :options="editorOption"></quillEditor>
+          <quill-editor style="height:288px ; marginBottom: 68px" v-model="article.content" ref="myQuillEditor" :options="editorOption"></quill-editor>
         </el-form-item>
         <!-- ----------------------------------------- -->
         <el-form-item label="频道">
@@ -68,7 +68,8 @@ export default {
         },
         channel_id: '' // 频道id
       },
-      channels: [] /// 频道列表数组
+      channels: [], /// 频道列表数组
+      editorOption: {} // 富文本编辑器的配置选项对象
     }
   },
   created () {
@@ -92,12 +93,12 @@ export default {
       this.$axios({
         method: 'POST',
         url: '/articles',
-        // Headers参数
-        headers: {
-          // 接口中说明的 Content-Type application/json 不需要传递
-          // 因为 axios 会自动添加发送 Content-Type application/json
-          Authorization: `Bearer ${window.localStorage.getItem('user_token')}`
-        },
+        // // Headers参数
+        // headers: {
+        //   // 接口中说明的 Content-Type application/json 不需要传递
+        //   // 因为 axios 会自动添加发送 Content-Type application/json
+        //   Authorization: `Bearer ${window.localStorage.getItem('user_token')}`
+        // },
         // Query参数
         params: {
           draft
@@ -105,7 +106,14 @@ export default {
         // Body参数
         data: this.article
       })
-        .then(() => {})
+        .then(() => {
+          if (draft) {
+            this.$message({ message: '以存入草稿', type: 'success' })
+          } else {
+            this.$message({ message: '发布成功', type: 'success' })
+          }
+          // this.$router.push('/article')
+        })
         .catch()
     }
   }
