@@ -16,14 +16,17 @@
         </el-form-item>
         <!-- ----------------------------------------- -->
         <el-form-item label="频道">
-          <el-select placeholder="请选择频道" v-model="article.channel_id">
+          <!-- <el-select placeholder="请选择频道" v-model="article.channel_id">
             <el-option
               :label="channel.name"
               :value="channel.id"
               v-for="channel in channels"
               :key="channel.id"
             ></el-option>
-          </el-select>
+          </el-select> -->
+
+          <!-- 自己封装一个频道列表组件 -->
+          <channel-select v-model="article.channel_id" :includeAll="false"></channel-select>
         </el-form-item>
         <!-- ----------------------------------------- -->
         <el-form-item label="封面">
@@ -52,10 +55,13 @@ import 'quill/dist/quill.bubble.css'
 
 // 加载富文本编辑器的核心组件
 import { quillEditor } from 'vue-quill-editor'
+// 频道组件
+import ChannelSelect from '@/components/channel-select'
 export default {
   name: 'PublishIndex',
   components: {
-    quillEditor
+    quillEditor,
+    ChannelSelect
   },
   data () {
     return {
@@ -73,22 +79,22 @@ export default {
     }
   },
   created () {
-    this.loadChannels()
+    // this.loadChannels()
   },
   methods: {
     // 获取频道列表
-    loadChannels () {
-      // 有些接口需要 token，有些接口不需要 token
-      // 是否需要，应该由接口文档指示
-      this.$axios({
-        method: 'GET',
-        url: '/channels'
-      })
-        .then(res => {
-          this.channels = res.data.data.channels
-        })
-        .catch()
-    },
+    // loadChannels () {
+    //   // 有些接口需要 token，有些接口不需要 token
+    //   // 是否需要，应该由接口文档指示
+    //   this.$axios({
+    //     method: 'GET',
+    //     url: '/channels'
+    //   })
+    //     .then(res => {
+    //       this.channels = res.data.data.channels
+    //     })
+    //     .catch()
+    // },
     onSumbmit (draft) {
       this.$axios({
         method: 'POST',

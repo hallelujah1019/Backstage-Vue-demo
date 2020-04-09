@@ -25,15 +25,7 @@
           <!--
             下拉列表会把选中的 option 的 value 同步到数据中
           -->
-          <el-select placeholder="请选择频道" v-model="filterForm.channel_id">
-            <el-option label="所有频道" :value="null"></el-option>
-            <el-option
-              :label="channel.name"
-              :value="channel.id"
-              v-for="channel in channels"
-              :key="channel.id"
-            ></el-option>
-          </el-select>
+            <channel-selecct v-model="filterForm.channel_id"></channel-selecct>
         </el-form-item>
         <!-- ------------- -->
         <el-form-item label="时间选择">
@@ -105,8 +97,12 @@
 </template>
 
 <script>
+import ChannelSelecct from '@/components/channel-select'
 export default {
   name: 'ArticleIndex',
+  components: {
+    ChannelSelecct
+  },
   data () {
     return {
       // 过滤数据的表单
@@ -153,8 +149,6 @@ export default {
   },
   created () {
     this.loadArticles(1)
-    // 频道列表
-    this.loadChannels()
   },
   methods: {
     // 请求数据
@@ -200,19 +194,6 @@ export default {
     onPageSizeChange (pageSize) {
       this.page_size = pageSize
       this.loadArticles(1, pageSize)
-    },
-    // 获取频道列表
-    loadChannels () {
-      // 有些接口需要 token，有些接口不需要 token
-      // 是否需要，应该由接口文档指示
-      this.$axios({
-        method: 'GET',
-        url: '/channels'
-      })
-        .then(res => {
-          this.channels = res.data.data.channels
-        })
-        .catch()
     },
     // 查询按钮
     onQuery () {
