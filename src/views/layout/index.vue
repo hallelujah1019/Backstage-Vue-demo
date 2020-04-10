@@ -30,7 +30,7 @@
           </template>
           <el-menu-item index="/publish">发布文章</el-menu-item>
           <el-menu-item index="/article">内容列表</el-menu-item>
-          <el-menu-item index="1-3">评论管理</el-menu-item>
+          <el-menu-item index="/comment">评论管理</el-menu-item>
           <el-menu-item index="1-4">素材管理</el-menu-item>
         </el-submenu>
 

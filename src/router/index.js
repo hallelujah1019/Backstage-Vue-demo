@@ -5,10 +5,11 @@ import Layout from '../views/layout'
 import Login from '../views/login'
 // 导航进度条
 import NProgress from 'nprogress'
-// 首页、发布文章、内容列表
+// 首页、发布文章、内容列表、评论管理
 import Home from '@/views/home'
 import Publish from '@/views/publish'
 import Article from '@/views/article'
+import Comment from '@/views/comment'
 
 Vue.use(VueRouter)
 
@@ -43,6 +44,11 @@ const routes = [
     {
       path: '/publish/:articleId',
       component: Publish
+    },
+    // 评论管理
+    {
+      path: '/comment',
+      component: Comment
     }
     ]
   },
