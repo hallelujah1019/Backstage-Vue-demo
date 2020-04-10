@@ -2,7 +2,7 @@
   <div class="publish">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>发布文章</span>
+        <span>{{ $route.params.articleId ?  "编辑文章" : "发布文章" }}</span>
       </div>
       <!-- ----------------------------------------- -->
       <el-form ref="form" :model="article" label-width="80px">
@@ -39,8 +39,8 @@
         </el-form-item>
         <!-- ----------------------------------------- -->
         <el-form-item>
-          <el-button type="primary" @click="onSumbmit(false)">发表</el-button>
-          <el-button @click="onSumbmit(true)">存入草稿</el-button>
+          <el-button type="primary" @click="onSubmit(false)">发表</el-button>
+          <el-button @click="onSubmit(true)">存入草稿</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -80,6 +80,10 @@ export default {
   },
   created () {
     // this.loadChannels()
+    // 添加和编辑用的是同一个组件，编辑时要初始化文章内容（根据Id获取）
+    if (this.$route.params.articleId) {
+      this.loadArticle()
+    }
   },
   methods: {
     // 获取频道列表
@@ -95,7 +99,27 @@ export default {
     //     })
     //     .catch()
     // },
-    onSumbmit (draft) {
+
+    loadArticle () {
+      this.$axios({
+        method: 'GET',
+        url: `/articles/${this.$route.params.articleId}`
+      }).then(res => {
+        this.article = res.data.data
+      })
+    },
+    // 添加和编辑
+    onSubmit (draft) {
+      if (this.$route.params.articleId) {
+        // 请求编辑文章
+        this.updateArticle(draft)
+      } else {
+        // 请求添加文章
+        this.addArticle(draft)
+      }
+    },
+    // 添加
+    addArticle (draft) {
       this.$axios({
         method: 'POST',
         url: '/articles',
@@ -121,6 +145,25 @@ export default {
           // this.$router.push('/article')
         })
         .catch()
+    },
+    // 编辑
+    updateArticle (draft) {
+      this.$axios({
+        method: 'PUT',
+        url: `/articles/${this.$route.params.articleId}`,
+        params: {
+          draft
+        },
+        data: this.article
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '更新成功'
+        })
+        this.$router.push('/article')
+      }).catch(() => {
+        this.$message.error('更新失败')
+      })
     }
   }
 }

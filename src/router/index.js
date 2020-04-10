@@ -34,6 +34,15 @@ const routes = [
     {
       path: '/article',
       component: Article
+    },
+    // 编辑页面
+    //    如果从 a 路由跳转到 b 路由
+    //    两个，如果两个路由使用的同一个组件，那么这个组件不会重新渲染
+    //    正常的路由跳转，会销毁离开的组件，渲染新匹配到的组件
+    //    组件销毁也就意味着它的数据之类都被清除了
+    {
+      path: '/publish/:articleId',
+      component: Publish
     }
     ]
   },
