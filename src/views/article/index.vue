@@ -71,7 +71,15 @@
             >{{ articleStatus[scope.row.status].label }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="pubdate" label="发布日期" align="center"></el-table-column>
+        <el-table-column prop="pubdate" label="发布日期" align="center">
+            <!--
+              不传参：{{ scope.row.pubdate | dateFormat }}
+              传参：{{ scope.row.pubdate | dateFormat(参数) }}
+             -->
+          <template slot-scope="scope">
+            {{ scope.row.pubdate | dateFormat }}
+          </template>
+        </el-table-column>
         <el-table-column prop="address" label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="danger" @click="onDelete(scope.row.id)">删除</el-button>
@@ -97,6 +105,7 @@
 </template>
 
 <script>
+// import moment from 'moment'
 import ChannelSelecct from '@/components/channel-select'
 export default {
   name: 'ArticleIndex',
@@ -150,6 +159,13 @@ export default {
   created () {
     this.loadArticles(1)
   },
+  // 局部过滤器
+  // filters: {
+  //   dateFormat (value) {
+  //     console.log('dateFormat 被调用了')
+  //     return moment(value).format('YYYY-Mo-Do HH:mm:ss ')
+  //   }
+  // },
   methods: {
     // 请求数据
     loadArticles (page = 1, pageSize) {
@@ -176,6 +192,13 @@ export default {
         .then(res => {
           // 成功执行这里
           this.total_count = res.data.data.total_count
+          // ---------
+          // const articles = res.data.data.results
+          // articles.forEach(item => {
+          // // moment(指定时间).format('格式')
+          //   item.pubdate = moment(item.pubdate).format('YYYY-Mo-Do HH:mm:ss ')
+          // })
+          // this.articles = articles
           this.articles = res.data.data.results
         })
         .catch() // 失败执行这里

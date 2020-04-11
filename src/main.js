@@ -12,6 +12,8 @@ import 'nprogress/nprogress.css'
 import axios from 'axios'
 // 超出安全整数范围
 import JSONbig from 'json-bigint'
+// 时间格式
+import moment from 'moment'
 // 赋值给Vue的原型属性
 Vue.prototype.$axios = axios
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
@@ -69,7 +71,22 @@ axios.interceptors.response.use(function (response) {
 }, function (error) {
   return Promise.reject(error)
 })
+Vue.filter('dateFormat', (value, format = 'YYYY-Mo-Do HH:mm:ss') => {
+  return moment(value).format(format)
+})
 
+// 全局过滤器：任何组件模板都可以直接访问
+// 参数1：过滤器名称
+// 参数2：函数
+// 调用方式：在模板中 {{ 数据 | 过滤器 }}
+// | 管道符前面的数据就会作为参数传递给过滤器函数
+// 过滤器函数的第1个参数始终是
+// value、format 是形参，它就是我随便起的一个名字
+// Vue 在1.x 的时候有很多内置的过滤器
+// Vue 升级版本 2 的时候移除了所有的内置过滤器
+// 但是保留了过滤器的功能
+// 用户还可以继续自定义添加过滤器来使用
+// 强调：处理一些简单的文本格式化
 Vue.use(ElementUI) // vue.ues（）注册整个的所有elemengUI组件
 // use 调用了elementUI的一个方法  install    源码里面
 Vue.config.productionTip = false

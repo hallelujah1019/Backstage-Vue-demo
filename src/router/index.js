@@ -10,6 +10,7 @@ import Home from '@/views/home'
 import Publish from '@/views/publish'
 import Article from '@/views/article'
 import Comment from '@/views/comment'
+import CommentDetail from '@/views/comment-detail'
 
 Vue.use(VueRouter)
 
@@ -49,8 +50,13 @@ const routes = [
     {
       path: '/comment',
       component: Comment
-    }
-    ]
+    },
+    // 评论列表
+    {
+      path: '/comment/:articleId',
+      component: CommentDetail,
+      props: true
+    }]
   },
   {
     path: '/login',

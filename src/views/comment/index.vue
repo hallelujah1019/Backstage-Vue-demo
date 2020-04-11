@@ -5,7 +5,12 @@
         <span>评论管理</span>
       </div>
       <!-- ------------------------- -->
-      <el-table :data="articles" v-loading="loading" element-loading-text="拼命加载中" style="width: 100%">
+      <el-table
+        :data="articles"
+        v-loading="loading"
+        element-loading-text="拼命加载中"
+        style="width: 100%"
+      >
         <el-table-column prop="title" label="标题" width="466" align="center"></el-table-column>
         <el-table-column prop="total_comment_count" label="总评论数" align="center"></el-table-column>
         <el-table-column prop="fans_comment_count" label="粉丝评论数据" align="center"></el-table-column>
@@ -21,7 +26,10 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
-          <el-button type="primary">修改</el-button>
+          <template slot-scope="scope">
+            <!-- 跳转评论列表 -->
+            <el-button type="primary" @click="$router.push('/comment/' + scope.row.id)">修改</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </el-card>
@@ -72,8 +80,9 @@ export default {
           this.totalCount = res.data.data.total_count
         })
         .catch()
-        .finally(() => { // 无论成功还是失败，最终都要执行
-        // 停止 loading
+        .finally(() => {
+          // 无论成功还是失败，最终都要执行
+          // 停止 loading
           this.loading = false
         })
     },
