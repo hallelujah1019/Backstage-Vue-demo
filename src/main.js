@@ -71,9 +71,6 @@ axios.interceptors.response.use(function (response) {
 }, function (error) {
   return Promise.reject(error)
 })
-Vue.filter('dateFormat', (value, format = 'YYYY-Mo-Do HH:mm:ss') => {
-  return moment(value).format(format)
-})
 
 // 全局过滤器：任何组件模板都可以直接访问
 // 参数1：过滤器名称
@@ -87,6 +84,10 @@ Vue.filter('dateFormat', (value, format = 'YYYY-Mo-Do HH:mm:ss') => {
 // 但是保留了过滤器的功能
 // 用户还可以继续自定义添加过滤器来使用
 // 强调：处理一些简单的文本格式化
+Vue.filter('dateFormat', (value, format = 'YYYY-Mo-Do HH:mm:ss') => {
+  return moment(value).format(format)
+})
+
 Vue.use(ElementUI) // vue.ues（）注册整个的所有elemengUI组件
 // use 调用了elementUI的一个方法  install    源码里面
 Vue.config.productionTip = false

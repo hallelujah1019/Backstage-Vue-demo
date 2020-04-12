@@ -5,12 +5,13 @@ import Layout from '../views/layout'
 import Login from '../views/login'
 // 导航进度条
 import NProgress from 'nprogress'
-// 首页、发布文章、内容列表、评论管理
+// 首页、发布文章、内容列表、评论管理、素材管理
 import Home from '@/views/home'
 import Publish from '@/views/publish'
 import Article from '@/views/article'
 import Comment from '@/views/comment'
 import CommentDetail from '@/views/comment-detail'
+import Media from '@/views/media'
 
 Vue.use(VueRouter)
 
@@ -56,7 +57,13 @@ const routes = [
       path: '/comment/:articleId',
       component: CommentDetail,
       props: true
-    }]
+    },
+    // 素材管理
+    {
+      path: '/media',
+      component: Media
+    }
+    ]
   },
   {
     path: '/login',
