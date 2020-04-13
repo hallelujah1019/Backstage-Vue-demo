@@ -12,7 +12,7 @@
         <!-- ----------------------------------------- -->
         <el-form-item label="内容">
         <!-- 富文本编辑器 -->
-          <quill-editor style="height:288px ; marginBottom: 68px" v-model="article.content" ref="myQuillEditor" :options="editorOption"></quill-editor>
+          <quill-editor style="height:388px ; marginBottom: 68px" v-model="article.content" ref="myQuillEditor" :options="editorOption"></quill-editor>
         </el-form-item>
         <!-- ----------------------------------------- -->
         <el-form-item label="频道">
@@ -32,10 +32,32 @@
         <el-form-item label="封面">
           <el-radio-group v-model="article.cover.type">
             <el-radio :label="1">单图</el-radio>
+            <el-radio :label="2">双图</el-radio>
             <el-radio :label="3">三图</el-radio>
             <el-radio :label="0">无图</el-radio>
             <el-radio :label="-1">自动</el-radio>
           </el-radio-group>
+           <template v-if="article.cover.type > 0">
+            <el-row :gutter="200">
+              <el-col :span="3" v-for="(item, index) in article.cover.type" :key="item">
+                <!--
+                  <UploadImage v-model="article.cover.images[0]"></UploadImage>
+                    它得把选择的图片同步到数组的第1项
+                  <UploadImage v-model="article.cover.images[1]"></UploadImage>
+                    它得把选择的图片同步到数组的第2项
+                  <UploadImage v-model="article.cover.images[2]"></UploadImage>
+                    它得把选择的图片同步到数组的第3项
+
+                  完整写法：
+                    :value="article.cover.images[0]"
+                    @input="article.cover.images[0] = 事件参数"
+                 -->
+                <UploadImage
+                  v-model="article.cover.images[index]"
+                ></UploadImage>
+              </el-col>
+            </el-row>
+          </template>
         </el-form-item>
         <!-- ----------------------------------------- -->
         <el-form-item>
@@ -57,11 +79,16 @@ import 'quill/dist/quill.bubble.css'
 import { quillEditor } from 'vue-quill-editor'
 // 频道组件
 import ChannelSelect from '@/components/channel-select'
+
+//
+import UploadImage from './components/upload-image'
+
 export default {
   name: 'PublishIndex',
   components: {
     quillEditor,
-    ChannelSelect
+    ChannelSelect,
+    UploadImage
   },
   data () {
     return {
