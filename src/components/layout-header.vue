@@ -10,13 +10,13 @@
     <!-- 右侧 -->
     <el-col :span="3" class="right">
       <!-- 头像 -->
-      <img width="50" src="../assets/img/jlq.png" />
+      <img width="50" :src="user.photo" />
       <!-- 下拉菜单 -->
-      <span>你的小琳吖</span>
+      <span>{{ user.name }}</span>
       <el-dropdown trigger="click" placement="bottom-start">
         <i class="el-icon-s-tools" ></i>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>账户信息</el-dropdown-item>
+          <el-dropdown-item @click.native="$router.push('/account')">账户信息</el-dropdown-item>
           <el-dropdown-item @click.native="gitHttp">git地址</el-dropdown-item>
           <el-dropdown-item @click.native="onLogout">退出</el-dropdown-item>
         </el-dropdown-menu>
@@ -25,14 +25,29 @@
   </el-row>
 </template>
 <script>
+import eventBus from '@/utils/event-bus'
 export default {
   data () {
     return {
+      user: {
+        name: '', // 用户昵称
+        photo: '' // 用户头像
+      },
       // 展开开关
       foldSwitch: true,
       // 关闭开关
       unfoldSwitch: false
     }
+  },
+  created () {
+    this.loadUser()
+
+    // 在初始化中监听自定义事件
+    eventBus.$on('update-user', user => {
+      // this.user = user
+      this.user.name = user.name
+      this.user.photo = user.photo
+    })
   },
   methods: {
     // 调用父组件（home.vue）的折叠方法
@@ -46,6 +61,17 @@ export default {
         this.foldSwitch = true
         this.unfoldSwitch = false
       }
+    },
+    // 获取用户个人信息
+    loadUser () {
+      this.$axios({
+        method: 'GET',
+        url: '/user/profile'
+      }).then(res => {
+        this.user = res.data.data
+      }).catch(() => {
+        this.$message.error('获取数据失败')
+      })
     },
     // git地址
     gitHttp () {

@@ -105,7 +105,7 @@ export default {
       uploadHeaders: {
         Authorization: `Bearer ${token}`
       },
-      off: true
+      off: true// 收藏图标样式显示开关
     }
   },
   computed: {},

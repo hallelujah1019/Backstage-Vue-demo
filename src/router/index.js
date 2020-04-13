@@ -5,13 +5,14 @@ import Layout from '../views/layout'
 import Login from '../views/login'
 // 导航进度条
 import NProgress from 'nprogress'
-// 首页、发布文章、内容列表、评论管理、素材管理
+// 首页、发布文章、内容列表、评论管理、素材管理、账户信息
 import Home from '@/views/home'
 import Publish from '@/views/publish'
 import Article from '@/views/article'
 import Comment from '@/views/comment'
 import CommentDetail from '@/views/comment-detail'
 import Media from '@/views/media'
+import Account from '@/views/account'
 
 Vue.use(VueRouter)
 
@@ -62,6 +63,11 @@ const routes = [
     {
       path: '/media',
       component: Media
+    },
+    // 账户信息
+    {
+      path: '/account',
+      component: Account
     }
     ]
   },

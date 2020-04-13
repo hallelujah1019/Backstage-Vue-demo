@@ -45,7 +45,7 @@
           <el-menu-item index="2-4">粉丝列表</el-menu-item>
         </el-submenu>
 
-        <el-menu-item :style="submenuStyle" index="4">
+        <el-menu-item :style="submenuStyle" index="/account">
           <i class="el-icon-s-custom"></i>
           <span slot="title">账户信息</span>
         </el-menu-item>
@@ -54,7 +54,7 @@
     <!-- 大容器 -->
     <el-container>
       <!-- 头部容器 调用头部容器子组件 -->
-      <el-header>
+      <el-header style="padding: 8px 20px 0 20px">
         <layout-header @foldMetod="fold"></layout-header>
       </el-header>
       <el-main>
