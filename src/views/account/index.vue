@@ -17,7 +17,7 @@
               <el-input disabled v-model="user.mobile"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button round @click="onSubmit">保存修改</el-button>
+              <el-button round @click="onSubmit">保存修改啦啦啦啦啦</el-button>
             </el-form-item>
           </el-form>
         </el-col>
