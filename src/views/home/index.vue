@@ -1,10 +1,16 @@
 <template>
-  <div>首页</div>
+  <div>首页
+  <One></One>
+  </div>
 </template>
 
 <script>
-export default {
+  import One from '../../components/one'
 
+export default {
+  components :{
+    One,
+  }
 }
 </script>
 
