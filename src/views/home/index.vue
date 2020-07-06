@@ -1,15 +1,14 @@
 <template>
   <div>首页
-  <One></One>
+    <Two></Two>
   </div>
 </template>
 
 <script>
-  import One from '../../components/one'
-
+import Two from "../../components/two"
 export default {
-  components :{
-    One,
+  components:{
+    Two,
   }
 }
 </script>
